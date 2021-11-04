@@ -31,7 +31,7 @@ We can then run `kubectl top nodes` or `kubectl top pods` to check if it's worki
 
 kubernetes-dashboard is a general purpose, web-based UI for Kubernetes clusters. It allows users to manage applications running in the cluster and troubleshoot them, as well as manage the cluster itself.
 
-Since we're behind a private cloud and using a "middle man" EC2 instance it was a hard task to make this solution work so I just dropped the EC2 instance and did the same process but using my computer instead to be able launch `kubectl proxy` and view the dashboard locally.
+Since we're behind a private cloud and using a "middle man" EC2 instance it was a hard task to make this solution work so I just dropped the EC2 instance and did the same process but using my computer instead to be able launch `kubectl proxy` and view the dashboard on the browser.
 
 #### Install and use kubernetes-dashboard
 
