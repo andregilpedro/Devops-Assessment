@@ -32,8 +32,10 @@ The whole cluster is private and on the same VPC.
 ## Some thoughts
 
 * The AWS cloud aspect of this assessment consumed most of my time leaving me less time to spend on the k8s configurations
-* To monitor the k8s cluster instead of just the metrics server we could deploy a prometheus/grafana setup with alarmistic
+* EKS was a good alternative to Kops but for this assessment scale it wasn't very cost-efficient
+* To monitor the k8s cluster instead of just the metrics server or kubernetes-dashboard we could deploy a prometheus/grafana setup with alarmistic
 * Terraform has some integrations with Kops, implementing the cluster with it would probably faster, I did some experiments but decided to fallback to just using Kops
+
 
 # 🚀 Implementation
 

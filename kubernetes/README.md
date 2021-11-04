@@ -26,3 +26,15 @@ kubectl create secret generic creds \
 To get some metrics of our kubernetes cluster we can deploy the Metrics Server:
 `kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml`
 We can then run `kubectl top nodes` or `kubectl top pods` to check if it's working.
+
+### kubernetes-dashboard
+
+kubernetes-dashboard is a general purpose, web-based UI for Kubernetes clusters. It allows users to manage applications running in the cluster and troubleshoot them, as well as manage the cluster itself.
+
+Since we're behind a private cloud and using a "middle man" EC2 instance it was a hard task to make this solution work so I just dropped the EC2 instance and did the same process but using my computer instead to be able launch `kubectl proxy` and view the dashboard locally.
+
+#### Install and use kubernetes-dashboard
+
+* Deploy it using `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml`
+* Run `kubectl proxy` to allow you to access the cluster services i.e. access kubernetes-dashboard throught http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+* In order to access we need a user on the namespace kubernetes-dashboard, you can just run `kubectl apply -f dashboard-user.yaml` and then `kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"` to get the token
