@@ -37,4 +37,4 @@ Since we're behind a private cloud and using a "middle man" EC2 instance it was 
 
 * Deploy it using `kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.3.1/aio/deploy/recommended.yaml`
 * Run `kubectl proxy` to allow you to access the cluster services i.e. access kubernetes-dashboard throught http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
-* In order to access we need a user on the namespace kubernetes-dashboard, you can just run `kubectl apply -f dashboard-user.yaml` and then `kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"` to get the token
+* In order to access we need a token from a user on the namespace kubernetes-dashboard, you can just run `kubectl apply -f dashboard-user.yaml` to create a admin user and then `kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"` to get the token
