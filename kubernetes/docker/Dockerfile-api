@@ -1,0 +1,10 @@
+FROM alpine
+
+COPY src/api/api /home
+RUN chmod +x /home/api
+WORKDIR /home
+CMD [ "/home/api" ]
+#ENTRYPOINT [ "/home/api" ]
+
+# docker build -t repo:api -f Dockerfile-api .
+# docker push repo:api

@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: hello
+      tier: frontend
+      track: stable
+  revisionHistoryLimit: 3
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+        - name: app
+          image: "public.ecr.aws/d2n1k8i8/assessment132:app"
+          env:
+            - name: API_HOST
+              value: hello
+            - name: API_PORT
+              value: "9093"
+            - name: HTTP_PORT
+              value: "80"
+          resources:
+            limits:
+              cpu: "100m"
+              memory: 256Mi
+            requests:
+              cpu: "10m"
+              memory: 64Mi
+          readinessProbe:
+            successThreshold: 1
+            failureThreshold: 2
+            periodSeconds: 5
+            initialDelaySeconds: 5
+            httpGet:
+              path: /ping
+              port: 80
+              scheme: HTTP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-enabled: "true"
+    service.beta.kubernetes.io/aws-load-balancer-connection-draining-timeout: "90"
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "2"                       
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "3"                     
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-timeout: "5"                                 
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-interval: "10"
+spec:
+  selector:
+    app: hello
+    tier: frontend
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+  loadBalancerSourceRanges:
+    - "0.0.0.0/0"
+
+# kubectl apply -f app.yaml

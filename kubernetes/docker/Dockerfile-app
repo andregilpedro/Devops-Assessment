@@ -1,0 +1,10 @@
+FROM alpine
+
+COPY src/app/app /home
+RUN chmod +x /home/app
+WORKDIR /home
+CMD [ "/home/app" ]
+#ENTRYPOINT [ "/home/app" ]
+
+# docker build -t repo:app -f Dockerfile-app .
+# docker push repo:app
